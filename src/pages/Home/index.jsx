@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import {Favorites} from '../Favorites';
-import {FaBars, FaHeartCircleCheck, FaHeart, FaXmark} from "react-icons/fa6";
+import {FaBars, FaHeartCircleCheck, FaRegFaceGrinHearts, FaRegThumbsDown, FaInfo, FaArrowLeft} from "react-icons/fa6";
 import { IconContext } from "react-icons";
 import './styles.css';
 
@@ -18,7 +18,7 @@ export function Home() {
     method: 'GET',
     headers: {
       accept: 'application/json',
-      Authorization: ''
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlYjJlMjZhNTM0NTVjMjBhZDExYzI5ZGFiYzU2Y2YzOCIsInN1YiI6IjY0YTg2NDY0YjY4NmI5MDEwZTBhZmNlMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.TmRR7HTCEDiORcGoMmoSeF_SprHjY_GG6g8GZLQK_uo'
     }
   };
   //Gera um índice aleatório para a página de filmes
@@ -70,16 +70,19 @@ export function Home() {
     });
   }, []);
 
-  console.log(showed)
-
   return (  
   <div className="page-container">
 
     {showFavorited &&
     <div className="favorited-container">
-
-      <h1>Favoritos</h1>
-      <button type="button" onClick={handleShowFavorited}>Voltar</button>
+      <div className="favorited-header">
+      <IconContext.Provider value={{className: "favorited-button" }}>
+        <button type="button" onClick={handleShowFavorited}><FaArrowLeft /></button>
+        </IconContext.Provider>
+        <h1>Favoritos</h1>
+        <button></button>
+      </div>
+      
       <ul>
         {favorited &&(
           favorited.map((fav) => (
@@ -109,19 +112,28 @@ export function Home() {
       <img id='poster' src={shown.poster_path} alt="Cartaz do filme" />
     </main>
     
+    <section className='menu-container'>
     <div className="description">
       <strong>{shown.title}</strong>
-      <small>{shown.release_year}</small>
+      <i>{shown.release_year}</i>
     </div>
 
     <div className="interactMenu">
-    <IconContext.Provider value={{ color: "gray", className: "menu-buttons" }}>
-    <button type="button" onClick={refuseMovie}><FaXmark /></button>
+
+    <IconContext.Provider value={{ color: "#000000", className: "menu-buttons" }}>
+    <button type="button" onClick={refuseMovie}><FaRegThumbsDown /></button>
     </IconContext.Provider>
-    <IconContext.Provider value={{ color: "red", className: "menu-buttons" }}>
-    <button type="button" onClick={favoriteMovie}><FaHeart /></button>
+
+    <IconContext.Provider value={{ color: "#FFFFFF", className: "info-button" }}>
+    <button type="button" id='info-button'><FaInfo /></button>
     </IconContext.Provider>
+
+    <IconContext.Provider value={{ color: "red", className: "menu-buttons"}}>
+    <button type="button" onClick={favoriteMovie}><FaRegFaceGrinHearts /></button>
+    </IconContext.Provider>
+
     </div>
+    </section>
 
     </>
     }

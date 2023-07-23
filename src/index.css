@@ -2,4 +2,15 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
+    --background-color: #C2D5E0;
+    --primary-color: #E65C3D;
+    --font-color: #FFFFFF;
+    --button-color: #F1B53B;
+}
+
+body {
+    font-size: 16px;
+    
+    font-family: 'Roboto', sans-serif;
 }
