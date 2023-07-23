@@ -8,7 +8,7 @@
     "section";
     grid-template-rows: 5rem 27rem 1fr;
     
-    width: 31.25rem;
+    max-width: 31.25rem;
     height: 100vh;
 
     background-color: var(--background-color);
@@ -19,8 +19,6 @@ header{
 }
 
 header, .favorited-header {
-    width: 100%;
-
     padding-inline: 20px;
 
     display: flex;
@@ -55,8 +53,6 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-
-    width: 100%;
 }
 
 main img {
@@ -87,8 +83,6 @@ button:active{
     justify-content: space-between;
 
     background-color: var(--primary-color);
-
-    width: 100%;
 
     padding-top: 1rem;
     position: relative;
@@ -213,4 +207,19 @@ button:active{
     margin: 0 0.5rem;
 
     overflow-y: auto;
+}
+
+
+@media (max-width: 600px) {
+
+}
+
+@media (max-width: 510px) {
+    .page-container{
+        height: calc(100vh - 3.5rem);
+    }
+
+    main img{
+        width: 22rem;
+    }
 }
