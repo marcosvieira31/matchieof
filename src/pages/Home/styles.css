@@ -6,7 +6,7 @@
     "header"
     "main"
     "section";
-    grid-template-rows: 5rem 27rem 1fr;
+    grid-template-rows: 5rem max-content 1fr;
     
     max-width: 31.25rem;
     height: 100vh;
@@ -55,10 +55,6 @@ main {
     justify-content: center;
 }
 
-main img {
-    height: 100%;
-}
-
 button {
     background-color: var(--button-color);
 
@@ -90,7 +86,6 @@ button:active{
 
 .description {
     width: 100%;
-    height: 6rem;
 
     display: flex;
     flex-direction: column;
@@ -112,6 +107,19 @@ button:active{
     max-height: 4.5rem;
 }
 
+.description p{
+    
+    width: 80%;
+    max-height: 14rem;
+    
+    overflow: scroll;
+    
+    text-align: justify;
+    line-height: 1.4rem;
+    
+    margin-top: 0.8rem;
+}
+
 .interactMenu {
     width: 100%;
 
@@ -128,9 +136,9 @@ button:active{
     display: flex;
     justify-content: center;
     align-items: center;
-    
-    width: 8rem;
-    height: 8rem;
+
+    width: 8.5rem;
+    height: 8.5rem;
 
     border-radius: 0 6rem 0 0;
     border: none;
@@ -148,12 +156,16 @@ button:active{
 }
 
 #info-button {
-    width: 2rem;
-    height: 2rem;
+    width: 2.5rem;
+    height: 2.5rem;
 
-    border-radius: 2rem;
+    border-radius: 2.5rem;
 
     box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.25);
+}
+
+.info-button{
+    font-size: 1.2rem;
 }
 
 .menu-buttons{
@@ -209,17 +221,12 @@ button:active{
     overflow-y: auto;
 }
 
-
-@media (max-width: 600px) {
-
-}
-
 @media (max-width: 510px) {
     .page-container{
         height: calc(100vh - 3.5rem);
     }
 
     main img{
-        width: 22rem;
+        width: 15rem;
     }
 }
