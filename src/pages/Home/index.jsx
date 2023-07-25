@@ -4,6 +4,8 @@ import {FaBars, FaHeartCircleCheck, FaRegFaceGrinHearts, FaRegThumbsDown, FaInfo
 import { IconContext } from "react-icons";
 import './styles.css';
 
+const LOCAL_STORAGE_KEY = 'favorited';
+
 export function Home() {
   //Armazena lista de filmes já vizualizados
   const [showed, setShowed] = useState([]);
@@ -58,72 +60,93 @@ export function Home() {
   }
 
   function favoriteMovie() {
+
     requestAPI().then((movie) => {
       setShown(movie);
-      setShowed([...showed, shown]);
-      setFavorited([...favorited, shown]);
-      saveFavorites(shown)
     });
+
+    saveFavorites(shown);
+
+    setShowed((prevShowed) => [...prevShowed, shown]);
   }
 
-  function saveFavorites(movie) {
+  function saveFavorites(movie){
+    setFavorited((prevFavorited) => [...prevFavorited, movie]);
 
-    const favoritesList = localStorage.getItem('favorited');
+    const localStorageItems = JSON.parse(
+      localStorage.getItem(LOCAL_STORAGE_KEY)
+    );
 
-    let newFav = []
+    if(!localStorageItems){
+      const itemsList = [movie];
 
-    if(favoritesList){  
-
-      const favLS = JSON.parse(favoritesList);
-
-      if(Array.isArray(favLS)){
-        favLS.push(movie);
-        localStorage.setItem('favorited', JSON.stringify(favLS))
-      }else{
-        newFav.push(favLS);
-        newFav.push(movie);
-  
-        localStorage.setItem('favorited', JSON.stringify(newFav))
-      }
+      localStorage.setItem(
+        LOCAL_STORAGE_KEY, 
+        JSON.stringify(itemsList)
+      );
     }else{
-      localStorage.setItem('favorited', JSON.stringify(movie));
+      localStorageItems.push(movie);
+
+      localStorage.setItem(
+        LOCAL_STORAGE_KEY, 
+        JSON.stringify(localStorageItems)
+      );
+    }
+  }
+
+  function getFavorites(){
+    const localStorageItems = JSON.parse(
+      localStorage.getItem(LOCAL_STORAGE_KEY)
+    );
+
+    return localStorageItems || [];
+  }
+
+  function removeFavorite(id){
+    setFavorited(prevFavoritedState => prevFavoritedState.filter(movie => movie.id !== id));
+    
+    const localStorageItems = JSON.parse(
+      localStorage.getItem(LOCAL_STORAGE_KEY)
+    );
+
+    if(!localStorageItems){
+      return
     }
 
+    const updatedList = localStorageItems.filter(movie => movie.id !== id);
+    
+    localStorage.setItem(
+      LOCAL_STORAGE_KEY, 
+      JSON.stringify(updatedList)
+    );
   }
 
   function handleShowFavorited(){
-    showFavorited ? setShowFavorited(false) : setShowFavorited(true);
+    setShowFavorited((prevState) => !prevState);
   }
 
-  const removeFavorite = (id) => {
-    setFavorited(
-      favorited.filter(f => f.id !== id)
-    ); 
-  };
-
-  function info(){
+  function handleShowInfo(){
     const infoToClose = [{width: '17.5rem'}, {display: 'none'}];
     const infoToOpen = [{width: '6.5rem'}, {display: 'block'}];
 
 
     if(showInfo){
       setInfoStyle(infoStyle.toSpliced(0, 2, ...infoToClose));
-      setShowInfo(false);
+      setShowInfo((prevState) => !prevState);
     }else{
       setInfoStyle(infoStyle.toSpliced(0, 2, ...infoToOpen));
-      setShowInfo(true);
+      setShowInfo((prevState) => !prevState);
     }
   }
 
   useEffect(() => { 
-
-    const favoritesLS = localStorage.getItem('favorited');
-
-    favoritesLS ? setFavorited(JSON.parse(favoritesLS)) : [];
-
     requestAPI().then((movie) => {
       setShown(movie);
     });
+
+    const favoritedItems = getFavorites();
+    setFavorited(favoritedItems);
+
   }, []);
 
   return (  
@@ -184,7 +207,7 @@ export function Home() {
     </IconContext.Provider>
 
     <IconContext.Provider value={{ color: "#FFFFFF", className: "info-button" }}>
-    <button type="button" id='info-button' onClick={info}><FaInfo /></button>
+    <button type="button" id='info-button' onClick={handleShowInfo}><FaInfo /></button>
     </IconContext.Provider>
 
     <IconContext.Provider value={{ color: "red", className: "menu-buttons"}}>
